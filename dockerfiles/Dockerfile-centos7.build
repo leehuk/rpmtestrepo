@@ -1,0 +1,23 @@
+FROM centos:7
+LABEL maintainer="lee@leeh.uk"
+
+RUN yum install -y rpm-build createrepo
+RUN useradd -m rpmbuild
+
+USER rpmbuild
+WORKDIR /home/rpmbuild
+
+RUN mkdir -p /tmp/rpmbuild/1.0 /tmp/rpmbuild/1.1
+
+COPY spec/rpm-test-package-1.0.spec /home/rpmbuild
+COPY spec/rpm-test-package-1.1.spec /home/rpmbuild
+
+RUN rpmbuild -bb --buildroot /tmp/rpmbuild/1.0 rpm-test-package-1.0.spec
+RUN rpmbuild -bb --buildroot /tmp/rpmbuild/1.1 rpm-test-package-1.1.spec
+
+RUN mkdir /home/rpmbuild/rpmtestrepo
+RUN cp /home/rpmbuild/rpmbuild/RPMS/*/*.rpm /home/rpmbuild/rpmtestrepo/
+RUN cd /home/rpmbuild/rpmtestrepo && createrepo .
+RUN cd /home/rpmbuild && tar -zcf rpmtestrepo.tgz rpmtestrepo
+
+CMD ["/bin/bash"]
