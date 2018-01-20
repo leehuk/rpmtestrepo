@@ -6,3 +6,5 @@ COPY repos.d/rpmtestrepo-1.1.repo /etc/yum.repos.d/
 
 RUN cd /usr/share && tar -zxf /tmp/rpmtestrepo-c7.tgz
 RUN rm -f /tmp/rpmtestrepo-c7.tgz
+
+CMD ["/bin/bash"]
