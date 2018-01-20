@@ -15,9 +15,11 @@ COPY spec/rpm-test-package-1.1.spec /home/rpmbuild
 RUN rpmbuild -bb --buildroot /tmp/rpmbuild/1.0 rpm-test-package-1.0.spec
 RUN rpmbuild -bb --buildroot /tmp/rpmbuild/1.1 rpm-test-package-1.1.spec
 
-RUN mkdir /home/rpmbuild/rpmtestrepo
-RUN cp /home/rpmbuild/rpmbuild/RPMS/*/*.rpm /home/rpmbuild/rpmtestrepo/
-RUN cd /home/rpmbuild/rpmtestrepo && createrepo .
-RUN cd /home/rpmbuild && tar -zcf rpmtestrepo.tgz rpmtestrepo
+RUN mkdir /home/rpmbuild/rpmtestrepo-1.0 /home/rpmbuild/rpmtestrepo-1.1
+RUN cp /home/rpmbuild/rpmbuild/RPMS/*/rpm-test-package-1.0-1.noarch.rpm /home/rpmbuild/rpmtestrepo-1.0/
+RUN cd /home/rpmbuild/rpmtestrepo-1.0 && createrepo .
+RUN cp /home/rpmbuild/rpmbuild/RPMS/*/*.rpm /home/rpmbuild/rpmtestrepo-1.1/
+RUN cd /home/rpmbuild/rpmtestrepo-1.1 && createrepo .
+RUN cd /home/rpmbuild && tar -zcf rpmtestrepo.tgz rpmtestrepo-1.0 rpmtestrepo-1.1
 
 CMD ["/bin/bash"]
