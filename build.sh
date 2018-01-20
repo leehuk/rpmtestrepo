@@ -29,7 +29,7 @@ docker_build() {
     releasename="leehuk/rpmtestrepo:$longname"
 
     echo "Building $releasename"
-    docker build -t $releasename -f dockerfiles/Dockerfile-$longname.build . || bail "Docker $longname release build failed"
+    docker build -t $releasename -f dockerfiles/Dockerfile-$longname.release . || bail "Docker $longname release build failed"
 }
 
 docker_build "c6" "centos6"
