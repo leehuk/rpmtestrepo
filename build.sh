@@ -16,23 +16,22 @@ docker_extract() {
     docker rm -f rpmtestrepo-build
 }
 
-echo "Building leehuk/rpmtestrepo:c6-build"
-docker build -t leehuk/rpmtestrepo:c6-build -f dockerfiles/Dockerfile-centos6.build . || bail "Docker initial build failed"
-docker_extract "leehuk/rpmtestrepo:c6-build" "/home/rpmbuild/rpmtestrepo.tgz" "tmp/rpmtestrepo-c6.tgz"
+docker_build() {
+    shortname="$1"
+    longname="$2"
 
-echo "Building leehuk/rpmtestrepo:centos6"
-docker build -t leehuk/rpmtestrepo:centos6 -f dockerfiles/Dockerfile-centos6.release . || bail "Docker release build failed"
+    buildname="leehuk/rpmtestrepo:$shortname-build"
 
-echo "Building leehuk/rpmtestrepo:c7-build"
-docker build -t leehuk/rpmtestrepo:c7-build -f dockerfiles/Dockerfile-centos7.build . || bail "Docker initial build failed"
-docker_extract "leehuk/rpmtestrepo:c7-build" "/home/rpmbuild/rpmtestrepo.tgz" "tmp/rpmtestrepo-c7.tgz"
+    echo "Building $buildname"
+    docker build -t $buildname -f dockerfiles/Dockerfile-$longname.build . || bail "Docker $longname initial build failed"
+    docker_extract $buildname "/home/rpmbuild/rpmtestrepo.tgz" "tmp/rpmtestrepo-$shortname.tgz"
 
-echo "Building leehuk/rpmtestrepo:centos7"
-docker build -t leehuk/rpmtestrepo:centos7 -f dockerfiles/Dockerfile-centos7.release . || bail "Docker release build failed"
+    releasename="leehuk/rpmtestrepo:$longname"
 
-echo "Building leehuk/rpmtestrepo:fed27-build"
-docker build -t leehuk/rpmtestrepo:fed27-build -f dockerfiles/Dockerfile-fedora27.build . || bail "Docker initial build failed"
-docker_extract "leehuk/rpmtestrepo:fed27-build" "/home/rpmbuild/rpmtestrepo.tgz" "tmp/rpmtestrepo-fed27.tgz"
+    echo "Building $releasename"
+    docker build -t $releasename -f dockerfiles/Dockerfile-$longname.build . || bail "Docker $longname release build failed"
+}
 
-echo "Building leehuk/rpmtestrepo:fedora27"
-docker build -t leehuk/rpmtestrepo:fedora27 -f dockerfiles/Dockerfile-fedora27.release . || bail "Docker release build failed"
+docker_build "c6" "centos6"
+docker_build "c7" "centos7"
+docker_build "fed27" "fedora27"
