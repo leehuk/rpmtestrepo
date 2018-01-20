@@ -4,6 +4,7 @@ Release: 1
 Summary: RPM Test Package
 License: BSD 2-clause "Simplified" License
 URL: https://github.com/leehuk/rpmtesthelpers
+BuildArch: noarch
 
 %description
 RPM Test Package, Version 1.1
