@@ -1,4 +1,4 @@
-Name: rpm-test-package
+Name: rpmtestpackage
 Version: 1.1
 Release: 1
 Summary: RPM Test Package
