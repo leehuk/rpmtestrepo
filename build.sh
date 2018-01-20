@@ -29,3 +29,10 @@ docker_extract "leehuk/rpmtestrepo:c7-build" "/home/rpmbuild/rpmtestrepo.tgz" "t
 
 echo "Building leehuk/rpmtestrepo:centos7"
 docker build -t leehuk/rpmtestrepo:centos7 -f dockerfiles/Dockerfile-centos7.release . || bail "Docker release build failed"
+
+echo "Building leehuk/rpmtestrepo:fed27-build"
+docker build -t leehuk/rpmtestrepo:fed27-build -f dockerfiles/Dockerfile-fedora27.build . || bail "Docker initial build failed"
+docker_extract "leehuk/rpmtestrepo:fed27-build" "/home/rpmbuild/rpmtestrepo.tgz" "tmp/rpmtestrepo-fed27.tgz"
+
+echo "Building leehuk/rpmtestrepo:fedora27"
+docker build -t leehuk/rpmtestrepo:fedora27 -f dockerfiles/Dockerfile-fedora27.release . || bail "Docker release build failed"

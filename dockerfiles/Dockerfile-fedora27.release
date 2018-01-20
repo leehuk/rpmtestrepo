@@ -1,0 +1,10 @@
+FROM fedora:27
+LABEL maintainer="lee@leeh.uk"
+
+COPY tmp/rpmtestrepo-fed27.tgz /tmp/
+COPY repos.d/rpmtestrepo-1.1.repo /etc/yum.repos.d/
+
+RUN cd /usr/share && tar -zxf /tmp/rpmtestrepo-fed27.tgz
+RUN rm -f /tmp/rpmtestrepo-c6.tgz
+
+CMD ["/bin/bash"]

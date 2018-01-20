@@ -1,0 +1,25 @@
+FROM fedora:27
+LABEL maintainer="lee@leeh.uk"
+
+RUN dnf install -y rpm-build createrepo
+RUN useradd -m rpmbuild
+
+USER rpmbuild
+WORKDIR /home/rpmbuild
+
+RUN mkdir -p /tmp/rpmbuild/1.0 /tmp/rpmbuild/1.1
+
+COPY spec/rpmtestpackage-1.0.spec /home/rpmbuild
+COPY spec/rpmtestpackage-1.1.spec /home/rpmbuild
+
+RUN rpmbuild -bb --buildroot /tmp/rpmbuild/1.0 rpmtestpackage-1.0.spec
+RUN rpmbuild -bb --buildroot /tmp/rpmbuild/1.1 rpmtestpackage-1.1.spec
+
+RUN mkdir /home/rpmbuild/rpmtestrepo-1.0 /home/rpmbuild/rpmtestrepo-1.1
+RUN cp /home/rpmbuild/rpmbuild/RPMS/*/rpmtestpackage-1.0-1.noarch.rpm /home/rpmbuild/rpmtestrepo-1.0/
+RUN cd /home/rpmbuild/rpmtestrepo-1.0 && createrepo .
+RUN cp /home/rpmbuild/rpmbuild/RPMS/*/*.rpm /home/rpmbuild/rpmtestrepo-1.1/
+RUN cd /home/rpmbuild/rpmtestrepo-1.1 && createrepo .
+RUN cd /home/rpmbuild && tar -zcf rpmtestrepo.tgz rpmtestrepo-1.0 rpmtestrepo-1.1
+
+CMD ["/bin/bash"]
