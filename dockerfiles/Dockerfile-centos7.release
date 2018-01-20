@@ -1,0 +1,8 @@
+FROM centos:7
+LABEL maintainer="lee@leeh.uk"
+
+COPY tmp/rpmtestrepo-c7.tgz /tmp/
+COPY repos.d/rpmtestrepo-1.1.repo /etc/yum.repos.d/
+
+RUN cd /usr/share && tar -zxf /tmp/rpmtestrepo-c7.tgz
+RUN rm -f /tmp/rpmtestrepo-c7.tgz
