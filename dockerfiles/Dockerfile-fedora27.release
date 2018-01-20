@@ -2,6 +2,7 @@ FROM fedora:27
 LABEL maintainer="lee@leeh.uk"
 
 COPY tmp/rpmtestrepo-fed27.tgz /tmp/
+COPY repos.d/rpmtestrepo-1.0.repo /etc/yum.repos.d/
 COPY repos.d/rpmtestrepo-1.1.repo /etc/yum.repos.d/
 
 RUN cd /usr/share && tar -zxf /tmp/rpmtestrepo-fed27.tgz

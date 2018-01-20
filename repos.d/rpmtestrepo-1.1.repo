@@ -1,4 +1,4 @@
-[rpmtestrepo]
+[rpmtestrepo-1.1]
 name = RPM Test Repo
 baseurl = file:///usr/share/rpmtestrepo-1.1/
 gpgcheck=0
