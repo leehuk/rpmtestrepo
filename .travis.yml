@@ -1,0 +1,11 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - ./build.sh
+
+script:
+    - docker run leehuk/rpmtestrepo:centos6 /bin/bash -c "yum install -y rpmtestpackage"
+    - docker run leehuk/rpmtestrepo:centos7 /bin/bash -c "yum install -y rpmtestpackage"
+    - docker run leehuk/rpmtestrepo:fedora27 /bin/bash -c "yum install -y rpmtestpackage"
